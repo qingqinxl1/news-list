@@ -2,7 +2,7 @@ var Tools = require('./tools');
 
 //普通列表数据展示：
 //第一页数据通过模版配置展示，从第二页开始取发布出的.shtml数据展示.
-var NormalList = function(cur, content, successCB) {
+var NormalList = function (cur, content, successCB) {
   this.cur = cur;
   this.content = content;
   this.successCB = successCB;
@@ -18,7 +18,7 @@ var NormalList = function(cur, content, successCB) {
  * data-arrid: 已经显示的列表id，用来清除滚动加载时的重复数据。 js操作，无需页面初始化设置
  * data-pageno: 当前加载到第几页 js操作。无需页面初始化设置
  */
-NormalList.prototype.init = function() {
+NormalList.prototype.init = function () {
   var T = this,
     MAX_SCROLL_PAGE = 5;
 
@@ -42,13 +42,13 @@ NormalList.prototype.init = function() {
   }
 
   var $loadMore = T.content.siblings('.load_more');
-  this.cur.on('scrollLoad', function(e) {
+  this.cur.on('scrollLoad', function (e) {
     T.getPageFlag();
     if (T.loadNextPageFlag) {
       var flagTop = 0;
       try {
         flagTop = T.loadNextPageFlag.getBoundingClientRect().top;
-      } catch (e) {}
+      } catch (e) { }
       if (flagTop - T.clientHeight - T.scollLoadMargin <= 0) {
         var cur_page_no = ~~T.cur.data('pageno');
         if (cur_page_no < MAX_SCROLL_PAGE) {
@@ -65,33 +65,33 @@ NormalList.prototype.init = function() {
   var scrollNum = 0;
   var clearTime = 200;
   var maxScrollNum = 10;
-  $(window).on('scroll', function() {
+  $(window).on('scroll', function () {
     var time = clearTime;
     scrollNum++;
     if (scrollNum > maxScrollNum) {
       time = 0;
     }
     clearTimeout(clearScrollLoadId);
-    clearScrollLoadId = setTimeout(function() {
+    clearScrollLoadId = setTimeout(function () {
       scrollNum = 0;
       T.cur.trigger('scrollLoad');
     }, time);
-  }).on('resize', function() {
+  }).on('resize', function () {
     T.clientHeight = document.documentElement.clientHeight;
   });
 
   //点击加载更多.
-  $loadMore.on('click', function() {
+  $loadMore.on('click', function () {
     T.getPageFlag();
     T.send(T.successCB);
   });
 }
 
-NormalList.prototype.setPageNo = function(channel) {
+NormalList.prototype.setPageNo = function (channel) {
   channel.data('oneloadstatus', '1');
   channel.data('pageno', ~~channel.data('pageno') + 1);
 }
-NormalList.prototype.getUrl = function(url, pageno) {
+NormalList.prototype.getUrl = function (url, pageno) {
   var suffix = '.shtml';
   pageno = +pageno + 1;
   if (pageno > this.totalPage) {
@@ -104,7 +104,7 @@ NormalList.prototype.getUrl = function(url, pageno) {
   }
   return url;
 }
-NormalList.prototype.send = function(successCB) {
+NormalList.prototype.send = function (successCB) {
   var T = this;
   var url = this.getUrl(this.cur.data('url'), this.cur.data('pageno'));
   var $load = T.content.siblings('.loading');
@@ -122,7 +122,7 @@ NormalList.prototype.send = function(successCB) {
 
   this.loadXHR && this.loadXHR.abort();
   this.loadXHR = tools.sendXHR(url);
-  this.loadXHR.done(function(html) {
+  this.loadXHR.done(function (html) {
     T.loadXHR = null;
     T.setPageNo(T.cur);
 
@@ -135,19 +135,19 @@ NormalList.prototype.send = function(successCB) {
     if (typeof successCB == 'function') {
       successCB(); //渲染成功后回调.
     }
-  }).fail(function(e) {
+  }).fail(function (e) {
     if (e.statusText === 'abort') {
       loadXHR = null;
       return false;
     }
-  }).always(function(e) {
+  }).always(function (e) {
     if (e.statusText !== 'abort') {
       tools.hideLoading($load);
       T.lock = false;
     }
   });
 }
-NormalList.prototype.getPageFlag = function() {
+NormalList.prototype.getPageFlag = function () {
   this.loadNextPageFlag = this.content.find('.listpage').last()[0];
   if (this.loadNextPageFlag) {
     this.totalPage = ~~this.loadNextPageFlag.innerHTML;
@@ -159,7 +159,7 @@ NormalList.prototype.getPageFlag = function() {
  * 翻到下一页的时候cms已经重新发布，会出现前几条数据和上一页数据有重复.
  * @param $items
  */
-NormalList.prototype.removeRepeatItem = function($items) {
+NormalList.prototype.removeRepeatItem = function ($items) {
   var T = this,
     arrTCurID = T.cur.data('arrid');
 
@@ -183,7 +183,7 @@ NormalList.prototype.removeRepeatItem = function($items) {
  * 将dom格式的字符串转换为Dom类型.
  * @param str dom格式字符串.
  */
-NormalList.prototype.str2DocElement = function(str) {
+NormalList.prototype.str2DocElement = function (str) {
   var div = document.createElement('div');
   div.innerHTML = str;
   return div.children;

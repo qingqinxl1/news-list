@@ -35,7 +35,7 @@ require(['@cnpm/list'], function(List){
 
 ```
 //创建分页实例
-var rollList = new List.RollList({
+var rollList = new List({
   //当前点击的tab元素
   cur: null,
   //当前存放内容的元素
@@ -64,7 +64,7 @@ rollList.init();
  * @params cur 当前存放data-contentid的元素
  * @params content 当前存放内容的元素
  */
-var normalList = new List.NormalList(cur, content);
+var normalList = new List(cur, content);
 //分页方法调用
 normalList.init();
 ```

@@ -1,6 +1,6 @@
 {
   "name": "@cnpm/list",
-  "version": "1.0.55555",
+  "version": "1.0.6",
   "description": "列表数据展示",
   "main": "index.js",
   "scripts": {

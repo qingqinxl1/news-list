@@ -75,3 +75,8 @@ ul, li {
   width: 31px;
   height: 31px;
 }
+
+.content div img{
+  width: 200px;
+  height: 121px;
+}

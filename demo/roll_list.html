@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>roll分页例子</title>
-    <link rel="stylesheet" href="../dist/cms_list_css.css">
+    <link rel="stylesheet" href="./list.css">
   </head>
   <body>
       <div class="tab" data-url="http://localhost:8080/data/list.shtml">
@@ -14,14 +14,18 @@
       </div>
       <div class="loading"><img src="http://n2.static.pg0.cn/www/common/base/image/loading.gif"></div>
       <div class="load_more">点击加载更多</div>
-      
+
       <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
       <script type="text/html" id="roll_list_tmpl">
-        <% for(var i = 0,len = data.length; i < len; i++) {%>
-          <h2><%= data[i].TitleCN %></h2>
+        <% for(var i = 0,len = results.length; i < len; i++) {%>
+          <%var cur = results[i];%>
+          <div><img src="<%=cur.PreviewImage%>" alt="<%= cur.TitleCN %>"></div>
+          <h2><%= cur.TitleCN %></h2>
         <%}%>
+        <div id="listPage" class="listpage" style="height: 0;border:0;margin:0;padding:0;overflow: hidden;"><%=totalPage%></div>
       </script>
-      <!-- webpack打包后js调用 -->
-      <script type="text/javascript" src="../dist/roll_demo_js.js"></script>
+      <!-- js调用 -->
+      <script type="text/javascript" src="../dist/roll-list.js"></script>
+      <script type="text/javascript" src="roll_demo.js"></script>
   </body>
 </html>

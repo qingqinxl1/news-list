@@ -1,8 +1,8 @@
 {
   "name": "@cnpm/list",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "列表数据展示",
-  "main": "index.js",
+  "main": "./dist/roll-list.js",
   "scripts": {
     "build": "webpack",
     "server": "webpack-dev-server"
@@ -15,7 +15,8 @@
   "author": "huangxiaoli",
   "license": "ISC",
   "dependencies": {
-    "art-template": "^4.12.2"
+    "art-template": "^4.12.2",
+    "deep-assign": "^2.0.0"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.17",

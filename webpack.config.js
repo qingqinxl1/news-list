@@ -3,73 +3,46 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const moduleName = 'List'; //暴露给外部的模块名称
+const deepAssign = require('deep-assign');
+const cmsListModuleName = 'NormalList'; //暴露给外部的模块名称
+const rollListModuleName = 'RollList';
 
-module.exports = {
-  entry: {
-    cms_demo_js: [
-      './src/js/main.js'
-    ],
-    cms_list_css: [
-      './src/css/list.css'
-    ],
-    roll_demo_js: [
-      './src/js/roll_main.js'
-    ],
-    //只有cms方式的分页
-    cms_list_js: [
-      './src/js/cms_list.js'
-    ],
-    //只有roll接口分页方法
-    roll_list_js: [
-      './src/js/roll_list.js'
-    ],
-    //支持cms分页和roll接口分页
-    list: [
-      './index.js'
-    ]
-  },
-  output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'umd',
-    library: [moduleName]
-  },
+const commonConfig = {
   // 引用外部 jQuery
   externals: {
     'jquery': 'window.jQuery'
   },
   resolve: {
-    alias:{
+    alias: {
       'art-template$': 'art-template/lib/template-web'
     }
   },
   module: {
     rules: [{
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [{
-            loader: 'css-loader',
-            query: {
-              sourceMap: true,
-              minimize: true
-            }
-          }]
-        }),
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.(png|jpe?g|gif)$/,
+      test: /\.css$/,
+      loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
         use: [{
-          loader: 'file-loader',
+          loader: 'css-loader',
           query: {
-            publicPath: './',
-            name: '[name].[ext]'
+            sourceMap: true,
+            minimize: true
           }
-        }],
-        exclude: /node_modules/,
-      }
+        }]
+      }),
+      exclude: /node_modules/,
+    },
+    {
+      test: /\.(png|jpe?g|gif)$/,
+      use: [{
+        loader: 'file-loader',
+        query: {
+          publicPath: './',
+          name: '[name].[ext]'
+        }
+      }],
+      exclude: /node_modules/,
+    }
     ]
   },
   node: {
@@ -98,3 +71,27 @@ module.exports = {
     })
   ]
 };
+
+let cmsListConfig = {
+  entry: './src/cms_list.js',
+  output: {
+    filename: 'cms-list.js',
+    path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'umd',
+    library: [cmsListModuleName]
+  }
+};
+cmsListConfig = deepAssign(cmsListConfig, commonConfig);
+
+let rollListConfig = {
+  entry: './src/roll_list.js',
+  output: {
+    filename: 'roll-list.js',
+    path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'umd',
+    library: [rollListModuleName]
+  }
+};
+rollListConfig = deepAssign(rollListConfig, commonConfig);
+
+module.exports = [cmsListConfig, rollListConfig];

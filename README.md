@@ -6,7 +6,7 @@
 
 ### ES6
 
-```
+```javascript
 //.jsonp格式引入方式
 import RollList from '@cnpm/list';
 
@@ -20,14 +20,14 @@ import NormalList from '@cnpm/list/dist/cms-list';
 
 #### jsonp格式数据引入路径
 
-`<script type="text/javascript" src="node_modules/@cnpm/list/dist/roll-list.js">`
+`<script type="text/javascript" src="http://n3.static.pg0.cn/fp/list/dist/roll-list.js">`
 
 #### .shtml格式数据引入路径
 
-`<script type="text/javascript" src="node_modules/@cnpm/list/dist/cms-list.js">`
+`<script type="text/javascript" src="http://n3.static.pg0.cn/fp/list/dist/cms-list.js">`
 
 ### AMD
-```
+```javascript
 //.jsonp格式数据调用
 require(['@cnpm/list'], function(RollList){
   //创建分页实例
@@ -47,7 +47,9 @@ require(['@cnpm/list'], function(RollList){
     //渲染模版id
     tmplID: 'roll_list_tmpl',
     //第一页页码开始是0还是1
-    pageNoStart: 0
+    pageNoStart: 0,
+    //是否滚动到页面顶部
+    isGoTop: false
   });
   //分页方法调用
   rollList.init();
@@ -57,19 +59,29 @@ require(['@cnpm/list'], function(RollList){
 require(['@cnpm/list/dist/cms-list'], function(NormalList){
   //cur 当前存放data-contentid的元素
   //content 当前存放内容的元素
+  //isGoTop 是否滚动到页面顶部，默认不滚动到顶部
+  //successCB 列表渲染成功后回调函数
   var normalList = new NormalList(cur, content);
   normalList.init();
 });
 ```
 
-## 更新参数方法(两种类型接口调用一致)
+## 更新参数方法
 
-```
+### jsonp格式数据
+```javascript
 /**
  * 更新参数
  * @params params 请求参数
+ */
+rollList.updateParams(params);
+```
+### .shtml格式数据
+```javascript
+/**
+ * 更新参数
  * @params cur 当前存放data-contentid的元素
  * @params content 当前存放内容的元素
  */
-rollList.updateParams(params, cur, content);
+normalList.updateParams(cur, content);
 ```

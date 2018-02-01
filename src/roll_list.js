@@ -13,7 +13,8 @@ var RollList = function (options) {
     cb: null,
     maxScrollNum: 5,
     tmplID: 'roll_list_tmpl',
-    pageNoStart: 0
+    pageNoStart: 0,
+    isGoTop: false
   }
   T.def = $.extend(T.def, options);
 
@@ -158,7 +159,9 @@ RollList.prototype.updateParams = function (params) {
   defs.cur.data('pageno', defs.pageNoStart); //更新页码
   defs.params = params; //更新参数
   defs.content.html(''); //删除现有的html数据
-  $('body').scrollTop(defs.content.offset().top || 0); //滚动到顶部
+  if(defs.isGoTop) {
+    $('body').scrollTop(defs.content.offset().top || 0); //滚动到顶部
+  }
   T.send(); //发送新的请求
 }
 

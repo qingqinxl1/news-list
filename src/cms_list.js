@@ -2,10 +2,11 @@ var Tools = require('./tools');
 
 //普通列表数据展示：
 //第一页数据通过模版配置展示，从第二页开始取发布出的.shtml数据展示.
-var NormalList = function (cur, content, successCB) {
+var NormalList = function (cur, content, isGoTop, successCB) {
   this.cur = cur;
   this.content = content;
   this.successCB = successCB;
+  this.isGoTop = isGoTop || false;
 };
 
 /**
@@ -187,6 +188,17 @@ NormalList.prototype.str2DocElement = function (str) {
   var div = document.createElement('div');
   div.innerHTML = str;
   return div.children;
+}
+
+NormalList.prototype.updateParams = function ($cur, $content) {
+  var T = this;
+
+  T.cur = $cur; //更新页码
+  T.content = $content; //更新参数
+  if(T.isGoTop) {
+    $('body').scrollTop(T.content.offset().top || 0); //滚动到顶部
+  }
+  T.send(T.successCB); //发送新的请求
 }
 
 module.exports = NormalList;

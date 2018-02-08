@@ -1,6 +1,6 @@
 {
   "name": "@cnpm/list",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "列表数据展示",
   "main": "./dist/roll-list.js",
   "scripts": {
